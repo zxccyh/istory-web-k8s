@@ -1,0 +1,19 @@
+resources:
+  - ../../base/istory-app
+
+
+patches:
+  - path: patch-lb-annotations.yaml
+    target:
+      kind: Service
+      name: istory-app-lb
+  - path: patch-deploy.yaml
+    target:
+      kind: Deployment
+      name: istory-app-deploy
+secretGenerator:
+  - name: istory-app-secret
+    envs:
+      - .env.secret # MYSQL_USER, MYSQL_PASSWORD from Github Action Secrets
+generatorOptions:
+  disableNameSuffixHash: true
