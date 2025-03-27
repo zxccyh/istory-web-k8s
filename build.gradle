@@ -1,24 +1,24 @@
 plugins {
-    // id 'checkstyle'
+    id 'checkstyle'
     id 'java'
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
-// checkstyle {
-//     toolVersion = '10.12.1'
-//     configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-//     ignoreFailures = true
-//     maxWarnings = 100
-// }
-// tasks.register('checkstyleReport') {
-//     dependsOn 'checkstyleMain', 'checkstyleTest'
-//     doLast {
-//         println "Checkstyle 리포트 위치:"
-//         println "메인 소스: build/reports/checkstyle/main.html"
-//         println "테스트 소스: build/reports/checkstyle/test.html"
-//     }
-// }
+checkstyle {
+    toolVersion = "8.45"
+    configFile = file("config/checkstyle/checkstyle.xml")
+    maxWarnings = 0
+    ignoreFailures = false
+}
+tasks.register('checkstyleReport') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
+    doLast {
+        println "Checkstyle 리포트 위치:"
+        println "메인 소스: build/reports/checkstyle/main.html"
+        println "테스트 소스: build/reports/checkstyle/test.html"
+    }
+}
 
 group = 'me.dangtong'
 version = '0.0.1-SNAPSHOT'
