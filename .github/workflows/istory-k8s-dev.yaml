@@ -1,14 +1,11 @@
 #3
 name: Java CI with Gradle
-
 on:
   push:
     branches: [ "main" ]
-
 permissions:
   contents: read
   actions: read
-
 jobs:
   build:
     if: "contains(github.event.head_commit.message, '[go-dev]')"
