@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    if: "!contains(github.event.head_commit.message, '[skip workflow]')"
+    if: "contains(github.event.head_commit.message, '[go-dev]')"
     runs-on: ubuntu-latest
     environment: k8s-dev
     env:
@@ -109,7 +109,7 @@ jobs:
       - name: 10.서비스 리포지토리 체크아웃
         uses: actions/checkout@v4
         with:
-          repository: dangtong-s-inc/istory-service   # 바꾸기
+          repository: dangtong76/istory-platform   # 바꾸기
           ref: main # 바꾸기
           path: .
           token: ${{ secrets.GITHUB_SERVICE_PAT }}
