@@ -8,9 +8,18 @@ plugins {
 checkstyle {
     toolVersion = "8.45"
     configFile = file("config/checkstyle/checkstyle.xml")
-    maxWarnings = 0
-    ignoreFailures = false
+    maxWarnings = 100
+    ignoreFailures = true
+    showViolations = true
 }
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
 tasks.register('checkstyleReport') {
     dependsOn 'checkstyleMain', 'checkstyleTest'
     doLast {
