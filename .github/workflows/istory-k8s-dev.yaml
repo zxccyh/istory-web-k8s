@@ -125,17 +125,22 @@ jobs:
           ls -la
           # 현재 파일 내용 확인
           cat istory-app-deploy.yaml
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}\/istory.*|image: ${{ secrets.DOCKER_USERNAME }}\/istory:${{ env.DOCKER_TAG }}|g" istory-app-deploy.yaml
-          # 변경된 내용 확인
-          cat istory-app-deploy.yaml
-      
-      # 변경사항 커밋 및 푸시
-      - name: 12.서비스 리포지토리 변경사항 커밋 및 푸시
-        run: |
-          # git config --global user.name 'dangtong76' # 바꾸기
-          # git config --global user.email 'dangtong@gmail.com' # 바꾸기
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
-          git remote set-url origin https://${{ secrets.GIT_PAT }}@github.com/dangtong76/istory-platform.git # 바꾸기 
+          sed -i "s|newTag:.*|newTag: ${{ env.DOCKER_TAG }}|g" overlay/aws-dev/kustomization.yaml
+          git commit -Am "Update image tag to ${{ env.DOCKER_TAG }}"
           git push origin main
+          # sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}\/istory.*|image: ${{ secrets.DOCKER_USERNAME }}\/istory:${{ env.DOCKER_TAG }}|g" istory-app-deploy.yaml
+          # 변경된 내용 확인
+          # cat istory-app-deploy.yaml
+      
+      # 변경사항 커밋 및 푸시
+      # - name: 12.서비스 리포지토리 변경사항 커밋 및 푸시
+      #   run: |
+      #     # git config --global user.name 'dangtong76' # 바꾸기
+      #     # git config --global user.email 'dangtong@gmail.com' # 바꾸기
+      #     git config --global user.name 'github-actions[bot]'
+      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
+      #     git remote set-url origin https://${{ secrets.GIT_PAT }}@github.com/dangtong76/istory-platform.git # 바꾸기 
+      #     git push origin main
