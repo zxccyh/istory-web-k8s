@@ -111,13 +111,13 @@ jobs:
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> overlay/aws-dev/.env.secret
           echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> overlay/aws-dev/.env.secret
         
-      # 이미지 태그 업데이트
-      - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트 with Kustomize
-        run: |
-          # Ensure kustomize is installed
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          # Build the kustomize configuration
-          ./kustomize build overlay/aws-dev -o istory-app-deploy.yaml
+      # # 이미지 태그 업데이트
+      # - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트 with Kustomize
+      #   run: |
+      #     # Ensure kustomize is installed
+      #     curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+      #     # Build the kustomize configuration
+      #     ./kustomize build overlay/aws-dev -o istory-app-deploy.yaml
 
       - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트
         run: |
@@ -128,11 +128,11 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           sed -i "s|newTag:.*|newTag: ${{ env.DOCKER_TAG }}|g" overlay/aws-dev/kustomization.yaml
-          git commit -Am "Update image tag to ${{ env.DOCKER_TAG }}"
+          git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
           git push origin main
           # sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}\/istory.*|image: ${{ secrets.DOCKER_USERNAME }}\/istory:${{ env.DOCKER_TAG }}|g" istory-app-deploy.yaml
           # 변경된 내용 확인
-          # cat istory-app-deploy.yaml
+          cat overlay/aws-dev/istory-app-deploy.yaml
       
       # 변경사항 커밋 및 푸시
       # - name: 12.서비스 리포지토리 변경사항 커밋 및 푸시
