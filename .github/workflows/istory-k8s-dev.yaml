@@ -116,6 +116,13 @@ jobs:
           token: ${{ secrets.PAT }} 
       
       # 이미지 태그 업데이트
+      - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트 with Kustomize
+        run: |
+          # Ensure kustomize is installed
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+          # Build the kustomize configuration
+          ./kustomize build xinfra/istory-platform/overlay/aws-dev -o istory-app-deploy.yaml
+
       - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트
         run: |
           # 파일이 존재하는지 확인

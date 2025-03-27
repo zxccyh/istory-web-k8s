@@ -11,6 +11,10 @@ patches:
     target:
       kind: Deployment
       name: istory-app-deploy
+images:
+  - name: dangtong76/istory
+    newTag: new-image-tag
+
 secretGenerator:
   - name: istory-app-secret
     envs:
