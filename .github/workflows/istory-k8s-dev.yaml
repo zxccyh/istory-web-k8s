@@ -85,7 +85,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         
       - name: 5.Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew build
       
       - name: 6.Docker 디렉토리로 jar 파일 복사
         run: |
