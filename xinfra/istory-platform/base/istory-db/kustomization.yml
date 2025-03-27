@@ -1,6 +1,0 @@
-resources:
-  - istory-db-pod.yml
-  - istory-db-config.yml
-  - istory-db-lb.yml
-  - istory-db-pvc.yml
-  - istory-db-sc.yml
