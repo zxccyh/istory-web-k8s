@@ -1,5 +1,5 @@
 #3
-name: Java CI with Gradle
+name: istory-k8s-dev
 on:
   push:
     branches: [ "main" ]
@@ -109,7 +109,7 @@ jobs:
           repository: dangtong76/istory-platform   # 바꾸기
           ref: main # 바꾸기
           path: .
-          token: ${{ secrets.GITHUB_SERVICE_PAT }}
+          token: ${{ secrets.GIT_PAT }}
       
       # 이미지 태그 업데이트
       - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트 with Kustomize
@@ -137,6 +137,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
-          git remote set-url origin https://${{ secrets.PAT }}@github.com/dangtong-s-inc/istory-service.git # 바꾸기 
-          
+          git remote set-url origin https://${{ secrets.GIT_PAT }}@github.com/dangtong76/istory-platform.git # 바꾸기 
           git push origin main
