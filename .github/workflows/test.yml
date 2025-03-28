@@ -80,3 +80,27 @@ jobs:
           **/build/reports/tests/test/
           **/build/test-results/test/
         retention-days: 30 
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: java
+        queries: security-and-quality
+  
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:java"
+        output: sarif-results
+    - name: Run k6 Load Test
+      uses: grafana/k6-action@v0.3.0
+      with:
+        filename: src/test/load/load-test.js
+        flags: --vus 10 --duration 30s
+      env:
+        K6_VIRTUAL_USERS: 10
+        K6_DURATION: 30s
+        K6_TARGET_URL: http://localhost:8080/
