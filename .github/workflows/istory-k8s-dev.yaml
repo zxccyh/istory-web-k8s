@@ -101,24 +101,42 @@ jobs:
       - name: 10.서비스 리포지토리 체크아웃
         uses: actions/checkout@v4
         with:
-          repository: dangtong76/istory-platform   # 바꾸기
-          ref: main # 바꾸기
+          repository: dangtong76/istory-platform
+          ref: main
           path: .
           token: ${{ secrets.GIT_PAT }}
-      - name: 2..env.secret 파일 생성 (k8s-dev for Kustomize)
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+
+      - name: 2..env.secret 파일 생성 및 Secret 업데이트
         run: |
-          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> overlay/aws-dev/.env.secret
+          # 임시 .env.secret 파일 생성
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > overlay/aws-dev/.env.secret
           echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> overlay/aws-dev/.env.secret
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> overlay/aws-dev/.env.secret
           echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> overlay/aws-dev/.env.secret
-        
-      # # 이미지 태그 업데이트
-      # - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트 with Kustomize
-      #   run: |
-      #     # Ensure kustomize is installed
-      #     curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-      #     # Build the kustomize configuration
-      #     ./kustomize build overlay/aws-dev -o istory-app-deploy.yaml
+          
+          # Secret 생성/업데이트
+          kubectl create secret generic istory-app-secret \
+            --namespace=istory-dev \
+            --from-env-file=overlay/aws-dev/.env.secret \
+            --dry-run=client -o yaml | kubectl apply -f -
+          # Secret 생성/업데이트
+          kubectl create secret generic istory-db-secret \
+            --namespace=istory-dev \
+            --from-env-file=overlay/aws-dev/.env.secret \
+            --dry-run=client -o yaml | kubectl apply -f -
+          
+          # 임시 파일 삭제
+          rm overlay/aws-dev/.env.secret
 
       - name: 11.쿠버네티스 매니페스트 파일 이미지 태그 업데이트
         run: |
