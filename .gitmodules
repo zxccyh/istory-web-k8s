@@ -1,6 +1,0 @@
-[submodule "xinfra/istory-infra"]
-	path = xinfra/istory-infra
-	url = https://github.com/dangtong76/istory-infra.git
-[submodule "xinfra/istory-platform"]
-	path = xinfra/istory-platform
-	url = https://github.com/dangtong76/istory-platform.git
