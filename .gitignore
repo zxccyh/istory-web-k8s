@@ -1,5 +1,3 @@
-xinfra/**
-xinfra
 .env
 .DS_Store
 xinfra/docker/*.jar
