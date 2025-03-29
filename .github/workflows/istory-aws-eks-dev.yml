@@ -96,3 +96,10 @@ jobs:
       - name: 9.Docker Push
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }}
+      - name: 10.서비스 리포지토리 체크아웃
+        uses: actions/checkout@v4
+        with:
+          repository: dangtong76/istory-platform   # 바꾸기
+          ref: main # 바꾸기
+          path: .
+          token: ${{ secrets.GIT_PAT }}
