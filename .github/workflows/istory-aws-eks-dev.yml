@@ -83,7 +83,7 @@ jobs:
         run: |
           mkdir -p xinfra/docker/build/libs/
           cp build/libs/*.jar xinfra/docker/
-          ls xinfra/docker/ss
+          ls xinfra/docker/
       - name: 7.Docker Image Build
         run: docker build ./xinfra/docker -t ${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }} -f ./xinfra/docker/Dockerfile
       - name: 8.Docker Login
