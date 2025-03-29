@@ -133,7 +133,7 @@ jobs:
           sudo mv kustomize /usr/local/bin
       - name: kustomize update image yaml
         run: |
-          cd overlay/awd-dev
+          cd overlay/aws-dev
           kustomize edit set image istory=dagntong76/istory:${{ github.run_number }}
       - name: push yaml
         run: |
