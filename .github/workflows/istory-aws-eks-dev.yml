@@ -127,3 +127,16 @@ jobs:
             --from-literal=MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
             --namespace=default \
             --dry-run=client -o yaml | kubectl apply -f -
+      - name: kustomize install
+        run: |
+          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          sudo mv kustomize /usr/local/bin
+      - name: kustomize update image yaml
+        run: |
+          kustomize edit set image istory=dagntong76/istory:${{ github.run_number }}
+      - name: push yaml
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -am "Update image tag to ${{  github.run_number }}"
+          git push origin main
