@@ -127,7 +127,7 @@ jobs:
       - name: 서비스 리포지토리 체크아웃
         uses: actions/checkout@v4
         with:
-          repository: {{ secrets.GIT_USERNAME }}/{{ secrets.GIT_PLATFORM_REPO_NAME }}
+          repository: ${{ secrets.GIT_USERNAME }}/${{ secrets.GIT_PLATFORM_REPO_NAME }}
           ref: test # 바꾸기
           path: .
           token: ${{ secrets.GIT_ACCESS_TOKEN }}
