@@ -145,7 +145,7 @@ jobs:
       - name: 이미지 태그 업데이트 (kustomize)
         run: |
           cd overlay/aws-dev
-          kustomize edit set image ${{ secrets.DOCKER_USERNAME }}/istory=${{ secrets.DOCKER_USERNAME }}/istory:$${{ env.DOCKER_TAG }}
+          kustomize edit set image ${{ secrets.DOCKER_USERNAME }}/istory=${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }}
       - name: 서비스 리포지토리 최종 업데이트
         run: |
           git config --global user.name 'github-actions[bot]'
