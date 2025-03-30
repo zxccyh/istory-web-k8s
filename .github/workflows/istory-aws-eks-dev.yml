@@ -2,7 +2,7 @@
 name: Istory Deploy to AWS EKS DEV
 on:
   push:
-    branches: [ 'main', 'test' ]
+    branches: ['main', 'test', 'solution']
 permissions:
   contents: read
   actions: read
