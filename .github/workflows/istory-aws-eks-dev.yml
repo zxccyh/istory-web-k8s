@@ -1,5 +1,5 @@
 #8
-name: istory-k8s-dev
+name: Istory Deploy to AWS EKS DEV
 on:
   push:
     branches: [ "test" ]
