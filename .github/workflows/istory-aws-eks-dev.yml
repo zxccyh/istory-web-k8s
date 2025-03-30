@@ -123,13 +123,14 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }}
           docker push ${{ secrets.DOCKER_USERNAME }}/istory:latest
-          - name: 서비스 리포지토리 체크아웃
-          uses: actions/checkout@v4
-          with:
-            repository: {{ secrets.GIT_USERNAME }}/{{ secrets.GIT_PLATFORM_REPO_NAME }}   # 바꾸기
-            ref: main # 바꾸기
-            path: .
-            token: ${{ secrets.GIT_ACCESS_TOKEN }}
+
+      - name: 서비스 리포지토리 체크아웃
+        uses: actions/checkout@v4
+        with:
+          repository: {{ secrets.GIT_USERNAME }}/{{ secrets.GIT_PLATFORM_REPO_NAME }}
+          ref: test # 바꾸기
+          path: .
+          token: ${{ secrets.GIT_ACCESS_TOKEN }}
   
       - name: 쿠버네티스 secret 생성 (istory-db-secret)
         run: |
@@ -150,4 +151,4 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
-          git push origin main
+          git push origin test
