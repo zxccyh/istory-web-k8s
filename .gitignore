@@ -1,3 +1,4 @@
+**/create-secret.sh
 .env
 .DS_Store
 xinfra/docker/*.jar
