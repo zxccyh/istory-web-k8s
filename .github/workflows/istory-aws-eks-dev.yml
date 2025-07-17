@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "region: " ${{ secrets.AWS_REGION }} 
           echo "cluster: " ${{ secrets.CLUSTER_NAME }}
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.CLUSTER_NAME }}
+          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.K8S_CLUSTER_NAME }}
 
       - name: kustomize 설치
         run: |
