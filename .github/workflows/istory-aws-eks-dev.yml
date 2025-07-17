@@ -20,7 +20,7 @@ jobs:
         image: mysql:8.0
         env:
           # root 계정 비밀번호
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }} 
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           # 사용자 계정
           MYSQL_USER: ${{ secrets.MYSQL_USER }} # user
           # 사용자 계정 비밀번호
@@ -64,11 +64,11 @@ jobs:
           distribution: 'temurin'
 
       - name: 소스코드 다운로드
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
           path: .
-  
+
       - name: 개발용 application.yml 생성
         run: |
           cat > src/main/resources/application.yml << EOF
@@ -101,9 +101,9 @@ jobs:
 
       - name: Gradle 설정
         uses: gradle/gradle-build-action@v2
-        
+
       - name: JAVA build with TEST
-        run: ./gradlew build -x test
+        run: ./gradlew build
 
       - name: Docker 디렉토리로 JAR 파일 복사
         run: |
@@ -111,7 +111,7 @@ jobs:
           cp build/libs/*.jar xinfra/docker/
           ls xinfra/docker/
       - name: 컨테이너 이미지 빌드
-        run: | 
+        run: |
           docker build ./xinfra/docker -t ${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }} -f ./xinfra/docker/Dockerfile
           docker tag ${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }} ${{ secrets.DOCKER_USERNAME }}/istory:latest
 
@@ -134,7 +134,7 @@ jobs:
           ref: ${{ github.ref }} # istory-web-k8s, istory-platform 의 동일한 브렌치 라는 가정
           path: .
           token: ${{ secrets.GIT_ACCESS_TOKEN }}
-  
+
       - name: 쿠버네티스 secret 생성 (istory-db-secret)
         run: |
           kubectl create secret generic istory-db-secret \
@@ -148,11 +148,10 @@ jobs:
       - name: 이미지 태그 업데이트 (kustomize)
         run: |
           cd overlay/aws-dev
-          ls
           kustomize edit set image ${{ secrets.DOCKER_USERNAME }}/istory=${{ secrets.DOCKER_USERNAME }}/istory:${{ env.DOCKER_TAG }}
       - name: 서비스 리포지토리 최종 업데이트
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "Update image tag to ${{ env.DOCKER_TAG }}"
-          git push origin ${{ github.ref_name }} 
+          git push origin ${{ github.ref_name }}
